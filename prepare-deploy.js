@@ -1,11 +1,11 @@
 const fs = require("fs-extra");
 const path = require("path");
 
-const { STORYBOOK_PATH, REF_NAME, ACTOR } = process.env;
+const { STORYBOOK_PATH, REF, ACTOR } = process.env;
 
 const PUBLIC_PATH = path.join(process.cwd(), "public");
 
-const slug = slugify(REF_NAME);
+const slug = slugify(REF);
 
 const destination = path.join(PUBLIC_PATH, slug);
 
@@ -19,7 +19,7 @@ fs.moveSync(STORYBOOK_PATH, destination, {
 console.log(`Files moved!`);
 
 const metadata = {
-  ref_name: REF_NAME,
+  ref: REF,
   slug,
   actor: ACTOR,
 };
