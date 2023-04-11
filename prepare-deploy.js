@@ -9,9 +9,14 @@ const slug = slugify(REF_NAME);
 
 const destination = path.join(PUBLIC_PATH, slug);
 
-fs.copySync(STORYBOOK_PATH, destination, {
+console.log(`Moving files from ${STORYBOOK_PATH}`);
+console.log(`To ${destination}`);
+
+fs.moveSync(STORYBOOK_PATH, destination, {
   overwrite: true,
 });
+
+console.log(`Files moved!`);
 
 function slugify(str) {
   str = str
