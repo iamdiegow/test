@@ -1,7 +1,7 @@
 const fs = require("fs-extra");
 const path = require("path");
 
-const { STORYBOOK_PATH, REF_NAME } = process.env;
+const { STORYBOOK_PATH, REF_NAME, ACTOR } = process.env;
 
 const PUBLIC_PATH = path.join(process.cwd(), "public");
 
@@ -17,6 +17,14 @@ fs.moveSync(STORYBOOK_PATH, destination, {
 });
 
 console.log(`Files moved!`);
+
+const metadata = {
+  ref_name: REF_NAME,
+  slug,
+  actor: ACTOR,
+};
+
+fs.writeJsonSync(path.join(destination, "metadata.json"), metadata);
 
 function slugify(str) {
   str = str
