@@ -1,18 +1,15 @@
 const fs = require("fs-extra");
 const path = require("path");
 
-const {
-  STORYBOOK_PATH,
-  REF,
-  ACTOR,
-  PULL_REQUEST_TITLE,
-  PULL_REQUEST_URL,
-  GITHUB_CONTEXT,
-} = process.env;
+const { STORYBOOK_PATH, GITHUB_CONTEXT } = process.env;
 
 const PUBLIC_PATH = path.join(process.cwd(), "public");
 
-const slug = slugify(REF);
+const github = JSON.parse(GITHUB_CONTEXT);
+
+const isPullRequest = github.event_name === "pull_request";
+
+const slug = slugify(isPullRequest ? github.head_ref : github.ref_name);
 
 const destination = path.join(PUBLIC_PATH, slug);
 
@@ -26,21 +23,22 @@ fs.moveSync(STORYBOOK_PATH, destination, {
 console.log(`Files moved!`);
 
 const metadata = {
-  ref: REF,
   slug,
   actor: ACTOR,
-  is_pull_request: false,
+  is_pull_request: github.event_name === "pull_request",
 };
 
-if (PULL_REQUEST_TITLE !== "" && PULL_REQUEST_URL !== "") {
-  metadata.is_pull_request = true;
-  metadata.pull_request_title = PULL_REQUEST_TITLE;
-  metadata.pull_request_url = PULL_REQUEST_URL;
+if (github.event_name === "pull_request") {
+  metadata.pull_request_title = github.event.pull_request.title;
+  metadata.pull_request_url = github.event.pull_request.html_url;
+  metadata.ref = github.head_ref;
+} else {
+  metadata.ref = github.ref;
 }
 
-console.log(JSON.parse(GITHUB_CONTEXT));
-
 fs.writeJsonSync(path.join(destination, "metadata.json"), metadata);
+
+console.log("medata.json file was created!");
 
 function slugify(str) {
   str = str
