@@ -1,8 +1,14 @@
 const fs = require("fs-extra");
 const path = require("path");
 
-const { STORYBOOK_PATH, REF, ACTOR, PULL_REQUEST_TITLE, PULL_REQUEST_URL } =
-  process.env;
+const {
+  STORYBOOK_PATH,
+  REF,
+  ACTOR,
+  PULL_REQUEST_TITLE,
+  PULL_REQUEST_URL,
+  GITHUB_CONTEXT,
+} = process.env;
 
 const PUBLIC_PATH = path.join(process.cwd(), "public");
 
@@ -31,6 +37,8 @@ if (PULL_REQUEST_TITLE !== "" && PULL_REQUEST_URL !== "") {
   metadata.pull_request_title = PULL_REQUEST_TITLE;
   metadata.pull_request_url = PULL_REQUEST_URL;
 }
+
+console.log(JSON.parse(GITHUB_CONTEXT));
 
 fs.writeJsonSync(path.join(destination, "metadata.json"), metadata);
 
