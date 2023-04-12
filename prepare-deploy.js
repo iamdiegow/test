@@ -26,13 +26,7 @@ const metadata = {
   is_pull_request: false,
 };
 
-console.log(PULL_REQUEST_TITLE);
-console.log(PULL_REQUEST_URL);
-
-if (
-  typeof PULL_REQUEST_TITLE !== "undefined" &&
-  typeof PULL_REQUEST_URL !== "undefined"
-) {
+if (PULL_REQUEST_TITLE !== "" && PULL_REQUEST_URL !== "") {
   metadata.is_pull_request = true;
   metadata.pull_request_title = PULL_REQUEST_TITLE;
   metadata.pull_request_url = PULL_REQUEST_URL;
