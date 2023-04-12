@@ -32,6 +32,7 @@ if (github.event_name === "pull_request") {
   metadata.pull_request_title = github.event.pull_request.title;
   metadata.pull_request_url = github.event.pull_request.html_url;
   metadata.ref = github.head_ref;
+  metadata.commit_url = `${github.event.pull_request.html_url}/commits/${github.event.pull_request.head.sha}`;
 } else {
   metadata.ref = github.ref;
 }
