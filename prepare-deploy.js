@@ -24,7 +24,7 @@ console.log(`Files moved!`);
 
 const metadata = {
   slug,
-  actor: ACTOR,
+  actor: github.actor,
   is_pull_request: github.event_name === "pull_request",
 };
 
